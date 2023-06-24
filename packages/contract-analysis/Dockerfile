@@ -31,4 +31,4 @@ RUN pip install -r ${BUILD_PATH}/requirements.txt
 
 # Start the main server
 COPY . ${BUILD_PATH}
-ENTRYPOINT ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "4"]
+ENTRYPOINT ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "1"]
