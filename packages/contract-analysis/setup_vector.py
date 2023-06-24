@@ -9,6 +9,7 @@
 For all files inside the vulnerabilities folder, index the vulnerabilities.
 """
 
+from functools import cache
 import os
 
 import requests
@@ -25,7 +26,7 @@ from langchain.document_loaders import (
 from langchain.schema import Document
 
 
-def query_vector(texts: list[str]) -> list[float]:
+def query_vector(text: str) -> list[float]:
     """
     Takes input a list of strings and returns a list of vectors.
     Uses the HuggingFace pipeline API.
@@ -43,8 +44,9 @@ def query_vector(texts: list[str]) -> list[float]:
     response = requests.post(
         api_url,
         headers=headers,
-        json={"inputs": texts, "options": {"wait_for_model": True}},
+        json={"inputs": text, "options": {"wait_for_model": True}},
     )
+    assert response.status_code == 200, "Request failed"
     return response.json()
 
 
@@ -83,11 +85,15 @@ def get_filename_from_path(file_path):
     return filename
 
 
-def main():
+def create_database():
     """
     Loads all the vulnerabilities from the vulnerabilities folder,
     and then indexes them into an embedding vector.
     """
+    # Check if the database already exists
+    if os.path.exists("solidity_vulnerabilities.chromadb"):
+        print("Database already exists? Exiting...")
+        return
 
     # Load the documents
     print("Loading documents...")
@@ -96,17 +102,12 @@ def main():
 
     # Get the embeddings
     print("Getting embeddings...")
-    vulnerability_vectors = query_vector([v.code for v in vulnerabilities])
-    markdown_vectors = query_vector([m.text for m in markdowns])
+    vulnerability_vectors = [query_vector(v.page_content) for v in vulnerabilities]
+    markdown_vectors = [query_vector(m.page_content) for m in markdowns]
 
     # Add the embeddings to the database
     print("Creating database...")
-    client = chromadb.Client(
-        Settings(
-            chroma_db_impl="duckdb+parquet",
-            persist_directory="solidity_vulnerabilities.chromadb",
-        )
-    )
+    client = get_chromadb_client()
     collection = client.create_collection("solidity_vulnerabilities")
 
     # Add the vulnerabilities to the database
@@ -134,5 +135,77 @@ def main():
     print("Done!")
 
 
+@cache
+def get_chromadb_client():
+    client = chromadb.Client(
+        Settings(
+            chroma_db_impl="duckdb+parquet",
+            persist_directory="solidity_vulnerabilities.chromadb",
+        )
+    )
+    return client
+
+
+def query_database(text: str):
+    """
+    Does a test by querying the database.
+    """
+    print("Computing embedding...")
+    embedding = query_vector(text)
+    print("Querying database...")
+    client = get_chromadb_client()
+    collection = client.get_collection("solidity_vulnerabilities")
+    results = collection.query(embedding, k=1)
+    print("Query complete!")
+    print(results)
+    return {"embedding": embedding, "results": results}
+
+
 if __name__ == "__main__":
-    main()
+    create_database()
+    sol_reentrancy_text = """
+    pragma solidity ^0.4.15;
+
+contract Reentrance {
+    mapping (address => uint) userBalance;
+   
+    function getBalance(address u) constant returns(uint){
+        return userBalance[u];
+    }
+
+    function addToBalance() payable{
+        userBalance[msg.sender] += msg.value;
+    }   
+
+    function withdrawBalance(){
+        // send userBalance[msg.sender] ethers to msg.sender
+        // if mgs.sender is a contract, it will call its fallback function
+        if( ! (msg.sender.call.value(userBalance[msg.sender])() ) ){
+            throw;
+        }
+        userBalance[msg.sender] = 0;
+    }   
+
+    function withdrawBalance_fixed(){
+        // to protect against re-entrancy, the state variable
+        // has to be change before the call
+        uint amount = userBalance[msg.sender];
+        userBalance[msg.sender] = 0;
+        if( ! (msg.sender.call.value(amount)() ) ){
+            throw;
+        }
+    }   
+
+    function withdrawBalance_fixed_2(){
+        // send() and transfer() are safe against reentrancy
+        // they do not transfer the remaining gas
+        // and they give just enough gas to execute few instructions    
+        // in the fallback function (no further call possible)
+        msg.sender.transfer(userBalance[msg.sender]);
+        userBalance[msg.sender] = 0;
+    }   
+   
+}
+    """
+
+    query_database(sol_reentrancy_text)
