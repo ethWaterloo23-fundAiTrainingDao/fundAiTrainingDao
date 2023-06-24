@@ -161,7 +161,7 @@ def query_database(text: str):
     )
     print("Query complete!")
     print(results)
-    return {"embedding": embedding, "results": results}
+    return {"results": results}
 
 
 if __name__ == "__main__":
