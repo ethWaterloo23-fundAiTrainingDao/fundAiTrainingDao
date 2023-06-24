@@ -4,8 +4,15 @@
 
 # Stage 1: base image
 FROM python:3.11-slim-bullseye AS base
-ENV BUILD_PATH=/build/
+ENV BUILD_PATH=/build
 WORKDIR ${BUILD_PATH}
+
+RUN apt update && \
+    apt -y install --no-install-recommends bash curl make git && \
+    curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
+    apt -y install --no-install-recommends --no-install-suggests gcc g++ nodejs && \
+    apt clean && \
+    rm -rf /var/cache/apt/lists
 
 # Stage 2
 # Convert poetry into requirements.txt for standard pip install.
@@ -20,7 +27,7 @@ RUN poetry lock --check && poetry export --with=$POETRY_WITH -o requirements.txt
 # Install with pip and start the main server
 FROM base as runtime
 COPY --from=poetry ${BUILD_PATH}/requirements.txt ${BUILD_PATH}
-RUN --mount=type=cache,target=/root/.cache pip install -r requirements.txt
+RUN pip install -r ${BUILD_PATH}/requirements.txt
 
 # Start the main server
 COPY . ${BUILD_PATH}
