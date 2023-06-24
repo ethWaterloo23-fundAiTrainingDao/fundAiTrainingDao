@@ -41,7 +41,7 @@ async def vector_similarity(text: str):
     """
     if not is_solidity_code(text):
         logger.info("Not Solidity code?")
-        return {"error": "Not Solidity code?"}
+        return {"error": "Not Solidity code? 🙃"}
     output = query_database(text)
     return output
 
