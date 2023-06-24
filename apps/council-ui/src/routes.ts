@@ -4,6 +4,7 @@ export enum Routes {
   VOTERS = "/voters",
   PROPOSALS = "/proposals",
   VAULTS = "/vaults",
+  CONTRACTS = "/contracts",
 }
 
 export function makeProposalURL(
