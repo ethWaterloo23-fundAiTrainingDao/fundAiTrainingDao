@@ -92,7 +92,7 @@ def create_database():
     """
     # Check if the database already exists
     if os.path.exists("solidity_vulnerabilities.chromadb"):
-        print("Database already exists? Exiting...")
+        print("Database already exists? Skipping db creation...")
         return
 
     # Load the documents
@@ -155,7 +155,10 @@ def query_database(text: str):
     print("Querying database...")
     client = get_chromadb_client()
     collection = client.get_collection("solidity_vulnerabilities")
-    results = collection.query(embedding, k=1)
+    results = collection.query(
+        query_embeddings=embedding,
+        n_results=3,
+    )
     print("Query complete!")
     print(results)
     return {"embedding": embedding, "results": results}
@@ -167,34 +170,6 @@ if __name__ == "__main__":
     pragma solidity ^0.4.15;
 
 contract Reentrance {
-    mapping (address => uint) userBalance;
-   
-    function getBalance(address u) constant returns(uint){
-        return userBalance[u];
-    }
-
-    function addToBalance() payable{
-        userBalance[msg.sender] += msg.value;
-    }   
-
-    function withdrawBalance(){
-        // send userBalance[msg.sender] ethers to msg.sender
-        // if mgs.sender is a contract, it will call its fallback function
-        if( ! (msg.sender.call.value(userBalance[msg.sender])() ) ){
-            throw;
-        }
-        userBalance[msg.sender] = 0;
-    }   
-
-    function withdrawBalance_fixed(){
-        // to protect against re-entrancy, the state variable
-        // has to be change before the call
-        uint amount = userBalance[msg.sender];
-        userBalance[msg.sender] = 0;
-        if( ! (msg.sender.call.value(amount)() ) ){
-            throw;
-        }
-    }   
 
     function withdrawBalance_fixed_2(){
         // send() and transfer() are safe against reentrancy
@@ -208,4 +183,5 @@ contract Reentrance {
 }
     """
 
-    query_database(sol_reentrancy_text)
+    response = query_database(sol_reentrancy_text)
+    assert len(response["results"]) > 0

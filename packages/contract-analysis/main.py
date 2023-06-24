@@ -47,9 +47,14 @@ async def vector_similarity(text: str):
 
 
 # Todo: Placeholder, if we want to upload a SOL file instead of a string
-@app.post("/uploadfile/")
-async def create_upload_file(file: UploadFile):
-    return {"filename": file.filename}
+@app.post("/file/")
+async def vector_similar_file(file: UploadFile):
+    """
+    Returns the vector for the input file.
+    """
+    contents = await file.read()
+    contents_str = contents.decode("utf-8")  # Assuming the file is encoded as UTF-8
+    return await vector_similarity(contents_str)
 
 
 app = cors_app

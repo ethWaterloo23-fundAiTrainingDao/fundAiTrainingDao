@@ -7,7 +7,7 @@ readme = "README.md"
 packages = [{include = "contract_analysis"}]
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.10"
 fastapi = "^0.98.0"
 uvicorn = "^0.22.0"
 black = "^23.3.0"
