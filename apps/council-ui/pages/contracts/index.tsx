@@ -5,6 +5,7 @@ const AI_BACKEND = "http://35.238.33.72:8000";
 
 export default function Contract(): ReactElement | void {
   const [results, setResults] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const analyzeContract = async () => {
     const textarea = document.getElementById(
@@ -13,6 +14,8 @@ export default function Contract(): ReactElement | void {
     const contractCode = textarea.value;
 
     const url = `${AI_BACKEND}/?text=${encodeURIComponent(contractCode)}`;
+
+    setIsLoading(true);
 
     const response = await fetch(url, {
       method: "POST",
@@ -24,6 +27,7 @@ export default function Contract(): ReactElement | void {
 
     const data = await response.json();
     setResults(JSON.stringify(data));
+    setIsLoading(false);
   };
 
   return (
@@ -49,11 +53,22 @@ export default function Contract(): ReactElement | void {
         >
           Analyze
         </button>
-        {results && (
-          <div className="bg-gray-100 p-4 mt-4">
-            <h2 className="text-lg font-bold mb-2">Analysis Results:</h2>
-            <pre>{results}</pre>
+        {isLoading ? (
+          <div
+            className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
+            role="status"
+          >
+            <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
+              Analyzing...
+            </span>
           </div>
+        ) : (
+          results && (
+            <div className="bg-gray-100 p-4 mt-4">
+              <h2 className="text-lg font-bold mb-2">Analysis Results:</h2>
+              <pre>{results}</pre>
+            </div>
+          )
         )}
       </div>
     </Page>
