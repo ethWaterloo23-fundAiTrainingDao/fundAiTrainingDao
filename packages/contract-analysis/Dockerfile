@@ -8,7 +8,7 @@ ENV BUILD_PATH=/build
 WORKDIR ${BUILD_PATH}
 
 RUN apt update && \
-    apt -y install --no-install-recommends bash curl make git && \
+    apt -y install --no-install-recommends bash curl build-essential make git && \
     curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
     apt -y install --no-install-recommends --no-install-suggests gcc g++ nodejs && \
     apt clean && \
