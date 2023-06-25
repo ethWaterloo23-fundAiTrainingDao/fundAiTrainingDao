@@ -1,17 +1,20 @@
 import { ReactElement, useState } from "react";
 import { Page } from "src/ui/base/Page";
+import { AUCTION_EXAMPLE, INTEGER_EXAMPLE, RAND_EXAMPLE } from "./examples";
+import Results from "./results";
 
 const AI_BACKEND = "http://35.238.33.72:8000";
 
-export default function Contract(): ReactElement | void {
-  const [results, setResults] = useState("");
+interface ContractProps {
+  solCode: string;
+}
+
+export function Contract({ solCode }: ContractProps): ReactElement {
+  const [results, setResults] = useState<JSON>();
   const [isLoading, setIsLoading] = useState(false);
 
   const analyzeContract = async () => {
-    const textarea = document.getElementById(
-      "contract-textarea",
-    ) as HTMLTextAreaElement;
-    const contractCode = textarea.value;
+    const contractCode = solCode;
 
     const url = `${AI_BACKEND}/?text=${encodeURIComponent(contractCode)}`;
 
@@ -26,7 +29,7 @@ export default function Contract(): ReactElement | void {
     });
 
     const data = await response.json();
-    setResults(JSON.stringify(data));
+    setResults(data);
     setIsLoading(false);
   };
 
@@ -42,10 +45,11 @@ export default function Contract(): ReactElement | void {
         </h2>
         <textarea
           id="contract-textarea"
-          className="w-1/2 h-40 p-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-1/2 h-80 
+          p-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholder="pragma"
         >
-          Hold
+          {solCode}
         </textarea>
         <button
           className="daisy-btn daisy-btn-primary"
@@ -63,14 +67,19 @@ export default function Contract(): ReactElement | void {
             </span>
           </div>
         ) : (
-          results && (
-            <div className="bg-gray-100 p-4 mt-4">
-              <h2 className="text-lg font-bold mb-2">Analysis Results:</h2>
-              <pre>{results}</pre>
-            </div>
-          )
+          results && <Results data={results} />
         )}
       </div>
     </Page>
+  );
+}
+
+export default function ContractAll(): ReactElement {
+  return (
+    <>
+      <Contract solCode={AUCTION_EXAMPLE} />
+      <Contract solCode={RAND_EXAMPLE} />
+      <Contract solCode={INTEGER_EXAMPLE} />
+    </>
   );
 }
