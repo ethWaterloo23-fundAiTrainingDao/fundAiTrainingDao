@@ -1,3 +1,8 @@
+
+<img width="667" alt="Screenshot 2023-06-25 105057" src="https://github.com/ethWaterloo23-fundAiTrainingDao/fundAiTrainingDao/assets/1944021/b9b50712-ad61-4a8a-a068-4bceed913c99">
+
+![image](https://github.com/ethWaterloo23-fundAiTrainingDao/fundAiTrainingDao/assets/1944021/5065b48d-4375-4a22-8ed0-77c96342eafc)
+
 Powerful AI models should be a public good, just like Linux, Ethereum, and academic research on AI
 
   
@@ -16,4 +21,4 @@ Voters can communicate with each other just by knowing each other's wallet addre
 For our showcase, we trained the AI on existing vulnerabilities presented by Quantstamp and Slither's vulnerability list. The training uses HuggingFace's sentence_transformer to generate 384-dimensional vector embedding. The AI audit of the solidity code looks for similarities to known vulnerability patterns and returns the top 3 matches.
 
 
-<img width="667" alt="Screenshot 2023-06-25 105057" src="https://github.com/ethWaterloo23-fundAiTrainingDao/fundAiTrainingDao/assets/1944021/b9b50712-ad61-4a8a-a068-4bceed913c99">
+
