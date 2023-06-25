@@ -1,5 +1,7 @@
 import { ChevronRightIcon } from "@heroicons/react/24/outline";
-import { ReactElement, useMemo, useState } from "react";
+import { Client } from "@xmtp/xmtp-js";
+import { Signer } from "ethers";
+import { ReactElement, useEffect, useMemo, useRef, useState } from "react";
 import { makeVoterURL } from "src/routes";
 import { formatBalance } from "src/ui/base/formatting/formatBalance";
 import {
@@ -9,6 +11,10 @@ import {
 import { useDelegatesByVault } from "src/ui/vaults/hooks/useDelegatesByVault";
 import { VoterRowData } from "src/ui/voters/types";
 import { VoterAddress } from "src/ui/voters/VoterAddress";
+import { useSigner } from "wagmi";
+// eslint-disable-next-line no-restricted-imports
+import useBroadcast from "../hooks/useBroadcast";
+import Chat from "./chat/Chat";
 
 type SortField = "numberOfDelegators" | "votingPower";
 
@@ -27,8 +33,14 @@ export function VoterList({
     key: "votingPower",
     direction: "DESC",
   });
+  const [selectedVoter, setSelectedVoter] = useState(null);
+  const [messages, setMessages] = useState<any[]>([]);
+  const convRef = useRef(null);
 
+  const [client, setClient] = useState<Client | null>(null);
   const { data: delegatesByVault = {} } = useDelegatesByVault();
+  const broadcastMessage = useBroadcast();
+
   // Memoized to prevent invalidating sortedVoters on every render.
   const delegateAddresses = useMemo(
     () => Object.values(delegatesByVault).map(({ address }) => address),
@@ -69,6 +81,110 @@ export function VoterList({
       ),
     };
   }, [sortOptions, voters, delegateAddresses]);
+
+  const { data: signer } = useSigner();
+
+  const newConversation = async function (xmtp_client: any, addressTo: string) {
+    //Creates a new conversation with the address
+    if (await xmtp_client?.canMessage(addressTo)) {
+      try {
+        const conversation = await xmtp_client.conversations.newConversation(
+          addressTo,
+        );
+        convRef.current = conversation;
+
+        //Loads the messages of the conversation
+        const messagesToAdd = await conversation.messages();
+        console.log({ messagesToAdd, xmtp_client });
+        setMessages([...messages, ...messagesToAdd]);
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      console.log("cant message because is not on the network.");
+      //cant message because is not on the network.
+    }
+  };
+
+  const getMessageList = (messages: any[]) => {
+    // Filter messages by unique id
+    messages = messages.filter(
+      (v, i, a) => a.findIndex((t) => t.id === v.id) === i,
+    );
+
+    return (
+      <ul className="messageList">
+        {messages.map((message, index) => (
+          <li
+            key={message.id}
+            className="messageItem"
+            title="Click to log this message to the console"
+          >
+            <strong>
+              {/* {message.senderAddress === address ? "You" : message.senderAddress}: */}
+              {message.senderAddress}:
+            </strong>
+            <span>{message.content}</span>
+            <span className="date"> ({message.sent.toLocaleTimeString()})</span>
+            <span className="eyes" onClick={() => console.log(message)}>
+              👀
+            </span>
+          </li>
+        ))}
+      </ul>
+    );
+  };
+  const handleRadioChange = (address: any) => {
+    setSelectedVoter(address);
+  };
+
+  const handleDelegateClick = () => {
+    broadcastMessage(
+      client,
+      [selectedVoter],
+      `The User ${client?.address} delegates his vote to you `,
+    );
+  };
+
+  const initXmtp = async function () {
+    // Create the XMTP client
+    console.log;
+    if (!signer) {
+      return;
+    }
+    const xmtp = await Client.create(signer as Signer);
+    //Create or load conversation with Gm bot
+    voters
+      .filter((user: any) => user.address !== xmtp.address)
+      .forEach((user: any) => {
+        newConversation(xmtp, user.address);
+      });
+    // Set the XMTP client in state for later use
+    //Set the client in the ref
+    setClient(xmtp);
+  };
+
+  useEffect(() => {
+    // Function to stream new messages in the conversation
+    const streamMessages = async () => {
+      if (convRef.current && typeof convRef.current !== "never") {
+        const newStream = await convRef.current.streamMessages();
+        for await (const msg of newStream) {
+          const exists = messages.find((m) => m.id === msg.id);
+          if (!exists) {
+            setMessages((prevMessages) => {
+              const msgsnew = [...prevMessages, msg];
+              return msgsnew;
+            });
+          }
+        }
+      }
+    };
+    streamMessages();
+  }, [messages]);
+  useEffect(() => {
+    initXmtp();
+  }, [signer]);
 
   return (
     <div className="min-w-[250px]">
@@ -138,6 +254,10 @@ export function VoterList({
             }),
         ]}
       />
+      {/* {selectedVoter && <button
+            className="daisy-btn daisy-btn-primary"
+            onClick={handleDelegateClick}
+          > Delegate to {selectedVoter}</button>} */}
 
       {voters.length > size && (
         <div className="flex flex-col justify-center gap-4 py-8 text-center">
@@ -153,6 +273,12 @@ export function VoterList({
           </button>
         </div>
       )}
+      <Chat
+        client={client}
+        conversation={convRef.current}
+        messageHistory={messages}
+        addresses={voters.map(({ address }) => address)}
+      />
     </div>
   );
 }
