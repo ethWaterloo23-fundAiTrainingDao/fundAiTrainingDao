@@ -9,6 +9,17 @@ interface ResultsProps {
   data: JSON;
 }
 
+interface ActualData {
+  results: Results;
+}
+
+interface Results {
+  ids: ReadonlyArray<string>;
+  documents: ReadonlyArray<string>;
+  distances: ReadonlyArray<string>;
+  metadatas: ReadonlyArray<string>;
+}
+
 export default function Results({ data }: ResultsProps): ReactElement {
   if (!data) {
     return <div></div>;
@@ -22,13 +33,13 @@ export default function Results({ data }: ResultsProps): ReactElement {
     );
   }
 
-  const results = data["results"];
+  const data_checked: ActualData = data as unknown as ActualData;
+
+  const results = data_checked["results"];
   const ids = results["ids"][0];
   const documents = results["documents"][0];
-  const metadatas = results["metadatas"][0];
   const distances = results["distances"][0];
   const numResults = ids.length;
-  console.log(ids);
 
   return (
     <div className="bg-gray-100 p-4 mt-4">
