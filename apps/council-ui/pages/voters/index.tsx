@@ -1,4 +1,5 @@
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
+import { ThirdwebProvider } from "@thirdweb-dev/react";
 import { ReactElement, useMemo, useState } from "react";
 import { getBulkEnsRecords } from "src/ens/getBulkEnsRecords";
 import { ErrorMessage } from "src/ui/base/error/ErrorMessage";
@@ -32,40 +33,42 @@ export default function Voters(): ReactElement {
 
   return (
     <Page>
-      <div className="max-w-3xl px-4 m-auto space-y-10">
-        <div>
-          <h1 className="text-5xl font-bold">Voters</h1>
-          <p className="mt-6 text-lg">
-            Voters are accounts that currently have voting power. You can search
-            by partial keywords using ENS names or addresses.
-          </p>
-        </div>
+      <ThirdwebProvider activeChain="goerli">
+        <div className="max-w-3xl px-4 m-auto space-y-10">
+          <div>
+            <h1 className="text-5xl font-bold">Voters</h1>
+            <p className="mt-6 text-lg">
+              Voters are accounts that currently have voting power. You can
+              search by partial keywords using ENS names or addresses.
+            </p>
+          </div>
 
-        <div className="flex items-center gap-4">
-          <input
-            type="text"
-            placeholder="Search by ENS or address"
-            className="w-full daisy-input-bordered daisy-input"
-            onChange={(e) => search(e.target.value as string)}
-            disabled={status !== "success"}
-          />
-          <GSCOnlyToggle
-            on={gscOnly}
-            onToggle={setGscOnly}
-            disabled={status !== "success"}
-          />
-        </div>
+          <div className="flex items-center gap-4">
+            <input
+              type="text"
+              placeholder="Search by ENS or address"
+              className="w-full daisy-input-bordered daisy-input"
+              onChange={(e) => search(e.target.value as string)}
+              disabled={status !== "success"}
+            />
+            <GSCOnlyToggle
+              on={gscOnly}
+              onToggle={setGscOnly}
+              disabled={status !== "success"}
+            />
+          </div>
 
-        {status === "success" ? (
-          <VoterList
-            voters={filteredResults}
-            size={listSize}
-            onSizeChange={(newSize) => setListSize(newSize)}
-          />
-        ) : (
-          <VoterListSkeleton />
-        )}
-      </div>
+          {status === "success" ? (
+            <VoterList
+              voters={filteredResults}
+              size={listSize}
+              onSizeChange={(newSize) => setListSize(newSize)}
+            />
+          ) : (
+            <VoterListSkeleton />
+          )}
+        </div>
+      </ThirdwebProvider>
     </Page>
   );
 }
