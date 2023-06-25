@@ -1,15 +1,34 @@
 {
-	"eslint.workingDirectories": [
-		"./apps/council-ui"
-	],
-	"dotenv.enableAutocloaking": false,
-	"json.schemas": [
-		{
-			"fileMatch": [
-				"*.deployments.json"
-			],
-			"url": "./packages/council-deploy/src/deployments/deployments.schema.json"
-		}
-	],
-	"markdown.extension.toc.levels": "2..6"
+  "eslint.workingDirectories": ["./apps/council-ui"],
+  "dotenv.enableAutocloaking": false,
+  "json.schemas": [
+    {
+      "fileMatch": ["*.deployments.json"],
+      "url": "./packages/council-deploy/src/deployments/deployments.schema.json"
+    }
+  ],
+  "markdown.extension.toc.levels": "2..6",
+
+  "python.terminal.activateEnvironment": false,
+  "python.formatting.provider": "none",
+  "editor.formatOnSave": true,
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter",
+    "editor.codeActionsOnSave": {
+      "source.fixAll": true
+    }
+  },
+  "editor.defaultFormatter": "ms-python.black-formatter",
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[dockerfile]": {
+    "editor.defaultFormatter": "ms-azuretools.vscode-docker"
+  }
 }

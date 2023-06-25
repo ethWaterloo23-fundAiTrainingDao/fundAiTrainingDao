@@ -50,6 +50,17 @@ export function Navigation(): ReactElement {
             <li>
               <Link
                 className={classNames({
+                  "daisy-active": pathname.startsWith(Routes.CONTRACTS),
+                })}
+                href={Routes.CONTRACTS}
+              >
+                huggingcontracts
+              </Link>
+            </li>
+
+            <li>
+              <Link
+                className={classNames({
                   "daisy-active": pathname.startsWith(Routes.VAULTS),
                 })}
                 href={Routes.VAULTS}
@@ -86,7 +97,7 @@ export function Navigation(): ReactElement {
           </ul>
         </div>
         <div className="ml-2 whitespace-nowrap text-xl text-base-content">
-          council-reference-ui
+          FundAiTrainingDao-UI
         </div>
       </div>
       <div className="daisy-navbar-center hidden lg:flex">
@@ -99,6 +110,16 @@ export function Navigation(): ReactElement {
               href={Routes.PROPOSALS}
             >
               proposals
+            </Link>
+          </li>
+          <li>
+            <Link
+              className={classNames({
+                "daisy-active": pathname.startsWith(Routes.CONTRACTS),
+              })}
+              href={Routes.CONTRACTS}
+            >
+              huggingcontracts
             </Link>
           </li>
           <li>
