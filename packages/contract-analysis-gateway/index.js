@@ -3,6 +3,8 @@ import bot from "@xmtp/bot-starter";
 import dotenv from "dotenv";
 dotenv.config();
 
+const AI_BACKEND = process.env.AI_BACKEND;
+
 // XTMP message handler
 bot.default(async (context) => {
   const message = context.message.content;

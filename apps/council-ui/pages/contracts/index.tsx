@@ -1,9 +1,9 @@
 import { ReactElement, useState } from "react";
 import { Page } from "src/ui/base/Page";
+import { useSigner } from "wagmi";
 import { AUCTION_EXAMPLE, INTEGER_EXAMPLE, RAND_EXAMPLE } from "./examples";
 import Results from "./results";
-
-const AI_BACKEND = "http://35.238.33.72:8000";
+import { queryVectorBackend } from "./xmtp";
 
 interface ContractProps {
   solCode: string;
@@ -12,24 +12,24 @@ interface ContractProps {
 export function Contract({ solCode }: ContractProps): ReactElement {
   const [results, setResults] = useState<JSON>();
   const [isLoading, setIsLoading] = useState(false);
+  const { data: signer } = useSigner();
+
+  if (!signer) {
+    return <div>Connect your wallet to use this feature</div>;
+  }
 
   const analyzeContract = async () => {
     const contractCode = solCode;
-
-    const url = `${AI_BACKEND}/?text=${encodeURIComponent(contractCode)}`;
-
     setIsLoading(true);
 
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      //   body: JSON.stringify({ contractCode }),
-    });
-
-    const data = await response.json();
-    setResults(data);
+    const response = await queryVectorBackend(signer, contractCode);
+    if (!response) {
+      setIsLoading(false);
+      return;
+    }
+    // make json out of response
+    const json = JSON.parse(response);
+    setResults(json);
     setIsLoading(false);
   };
 
