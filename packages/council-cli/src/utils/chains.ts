@@ -1,5 +1,6 @@
 import {
   arbitrum,
+  gnosisChiado,
   goerli,
   hardhat,
   mainnet,
@@ -16,6 +17,7 @@ export const supportedChains = {
   optimism,
   arbitrum,
   polygon,
+  gnosisChiado,
 };
 
 export type SupportedChain = keyof typeof supportedChains;
