@@ -13,13 +13,13 @@ export function Contract({ solCode }: ContractProps): ReactElement {
   const [results, setResults] = useState<JSON>();
   const [isLoading, setIsLoading] = useState(false);
   const { data: signer } = useSigner();
+  const [contractCode, setContractCode] = useState<string>(solCode);
 
   if (!signer) {
     return <div>Connect your wallet to use this feature</div>;
   }
 
   const analyzeContract = async () => {
-    const contractCode = solCode;
     setIsLoading(true);
 
     const response = await queryVectorBackend(signer, contractCode);
@@ -48,6 +48,7 @@ export function Contract({ solCode }: ContractProps): ReactElement {
           className="w-1/2 h-80 
           p-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholder="pragma"
+          onChange={(e) => setContractCode(e.target.value)}
         >
           {solCode}
         </textarea>
