@@ -1,3 +1,5 @@
+import { ReactElement } from "react";
+
 export const AUCTION_EXAMPLE = `
 //Avoids "pushing" balance to users favoring "pull" architecture
 function bid() payable external {
@@ -71,3 +73,7 @@ contract IntegerOverflow {
     } 
 }
 `;
+
+export default function Foobar(): ReactElement {
+  return <></>;
+}

@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import { Client } from "@xmtp/xmtp-js";
 import { Signer } from "ethers";
+import { ReactElement } from "react";
 
 const AI_BACKEND = "0x46fC2771f9Ad87b57EFD8b1157DeFd3bEd69d324";
 
@@ -37,4 +38,8 @@ export async function queryVectorBackend(
     }
   }
   return null;
+}
+
+export default function Foobar(): ReactElement {
+  return <></>;
 }
