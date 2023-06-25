@@ -160,3 +160,13 @@ Learn more about the power of Turborepo:
 - [Scoped Tasks](https://turborepo.org/docs/core-concepts/scopes)
 - [Configuration Options](https://turborepo.org/docs/reference/configuration)
 - [CLI Usage](https://turborepo.org/docs/reference/command-line-reference)
+
+## Instructions on starting the AI portion
+
+1. Launch the webpage `yarn workspace @council/cli council server -p 8888` and `yarn workspace council-ui dev` so that http://0.0.0.0:3000 is ready! 
+
+2. Start the XMTP relay, from `contract-analysis-gateway` directory, run `yarn start` to start the relay server, it should say `Listening on 0x46fC2771f9Ad87b57EFD8b1157DeFd3bEd69d324`. Note the environment variables in `.env` file should contain KEY and AI_BACKEND. E.g. `KEY=0xce2ad27f93873964525483d3aa5fb8c11e340048c02fdfb0bdce8c7925ca29ab` and `AI_BACKEND=http://35.238.33.72:8000`
+
+3. Start the AI backend, from `contract-analysis` directory. Follow the [README.md](packages/contract-analysis/README.md), or [Dockerfile](packages/contract-analysis/Dockerfile). Check that `.env` has `ORG_TOKEN='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'`. Start by `uvicorn main:app --host 0.0.0.0 --port 8000 --workers 1`. Note that `curl localhost:8000` should work. The GCP instance is `http://35.238.33.72`.
+
+4. You're done! 🥳 You can visit http://localhost:3000/contracts and try to submit one of 3 example Solidity snippets. Wallet need to be connected.

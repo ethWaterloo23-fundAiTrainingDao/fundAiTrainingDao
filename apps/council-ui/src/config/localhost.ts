@@ -36,4 +36,19 @@ export const localhostCouncilConfig: CouncilConfig = {
       },
     },
   },
+
+  // gscVoting: {
+  //   name: "GSC",
+  //   address: "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
+  //   descriptionURL: "https://moreinfo.com",
+  //   vaults: [
+  //     {
+  //       name: "GSC Vault",
+  //       address: "0x9A9f2CCfdE556A7E9Ff0848998Aa4a0CFD8863AE",
+  //       type: "GSCVault",
+  //       descriptionURL: "https://moreinfo.com",
+  //     },
+  //   ],
+  //   proposals: {},
+  // },
 };
