@@ -76,3 +76,14 @@ Frozen because it removes a withdraw functionality
 - inherets from `LockingVolt.sol`
 - adds a function to create `CappedFrozenLockingVault.sol` with size of the vault and the reciepient as arguments
 - responsible for hangling the proposals and voting
+
+# Communication between members
+
+Annonymous communication between members reduces chances of corruption, bribery, and destructive cortel.
+
+We chose XMTP protocol for the communications between members. It essentially
+is Signal messanger's encryption with web3 addresses instead of phone numbers.
+
+We extend XMTP protocol with group messages and create a web UI inside the DAO UI to allow members to communicate.
+
+# AI to audit contracts
