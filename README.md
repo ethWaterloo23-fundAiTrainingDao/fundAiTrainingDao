@@ -108,6 +108,7 @@ we modified the following config files:
   UI to specify which crowdfunding vaults we created
 - [apps/council-ui/src/ui/vaults/fundVault/FundVaultStatsRow.tsx](apps/council-ui/src/ui/vaults/fundVault/FundVaultStatsRow.tsx#L92)
   a UI widget that adds send all funds button to the Vault
+- [apps/council-ui/src/ui/vaults/fundVault/hooks/useSendFunds.tsx](apps/council-ui/src/ui/vaults/fundVault/hooks/useSendFunds.tsx#L17) connects the send button to the chain
 
 # Communication between members
 
