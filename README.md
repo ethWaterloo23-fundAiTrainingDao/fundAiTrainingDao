@@ -54,12 +54,16 @@ steps and tasks related to training large AI models and
 `FrozenLockingVaultFactory.sol` responsible for governance of starting
 `CappedFrozenLockingVault.sol` vaults.  
 
-### Council's `FrozenLockingVolt.sol`
+### Council's [ `LockingVolt.sol` ](packages/council-typechain/contracts/vaults/LockingVolt.sol)
 
 manges:
 - deposits
 - votes
 - delegations
+
+### Council's [ `FrozenLockingVolt.sol` ]()
+
+- inherets from `LockingVolt.sol` 
 
 Frozen because it removes a withdraw functionality
 
