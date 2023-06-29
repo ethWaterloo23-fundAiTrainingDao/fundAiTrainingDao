@@ -85,7 +85,7 @@ Frozen because it removes a withdraw functionality
 ### UI and build process
 
 we modified the following config files:
-- [apps/council-sdk-starter/package.json](apps/council-sdk-starter/package.json)
+- [apps/council-sdk-starter/package.json](apps/council-sdk-starter/package.json#L25)
 
 # Communication between members
 
