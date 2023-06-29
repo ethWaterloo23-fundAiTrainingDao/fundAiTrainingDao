@@ -92,3 +92,10 @@ is Signal messanger's encryption with web3 addresses instead of phone numbers.
 We extend XMTP protocol with group messages and create a web UI inside the DAO UI to allow members to communicate.
 
 # AI to audit contracts
+
+# Local deployment
+
+
+
+
+
