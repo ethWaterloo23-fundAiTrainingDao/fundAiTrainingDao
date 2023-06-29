@@ -11,10 +11,11 @@ a support or educational chatbot or audit a contract without being constrained
 by licenses, biased fine-tuning, and data sharing.
 
 
-Our new type of DAO allows us to crowdsource and manage the multi-stage process
-of creating large AI models. We showcase the value of crowdfunded AI with its
-ability to find bugs in solidity contracts. The communication with the AI model
-and between the members is privacy-preserving and anonymous -- no IP or DNS. 
+Our new type of DAO allows for transparency and cost reduction in crowdsourcing
+and managing the multi-stage process of creating large AI models. We showcase
+the value of crowdfunded AI with its ability to find bugs in solidity
+contracts. The communication with the AI model and between the members is
+privacy-preserving and anonymous -- no IP or DNS. 
 
 
 The DAO has a governance vault for voting and multiple funding vaults to raise
