@@ -26,7 +26,7 @@ for example, for GPU compute to pre-train an LLM and, in return, get votes for
 the governance vault. Users can use the UI to delegate, vote, act on proposals,
 chat, and use the trained AI. The fund vault allows deposits and withdraws
 until the total amount reaches a threshold; after, the fund is locked, and the
-funds will be sent to an address to execute on the proposal, such as
+funds will be sent to an address to execute the proposal, such as
 pre-training of LLM. We inherit from delv-council's vault contracts with
 additional functionality.
 
