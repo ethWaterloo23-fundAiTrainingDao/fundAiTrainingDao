@@ -97,6 +97,17 @@ we modified the following config files:
 - [apps/council-sdk-starter/src/scripts/changeVaultStatus.ts](apps/council-sdk-starter/src/scripts/changeVaultStatus.ts#L17)
   specify the address of the voting contract, which is a part of the reviewer
   entity
+- lunched the local server on port 8888 due to some conflicts
+- [apps/council-ui/.env.sample](apps/council-ui/.env.sample) added local rpc
+  with port 8888 to the ui
+- landing page chages
+  [apps/council-ui/pages/index.tsx](apps/council-ui/pages/index.tsx)
+- [apps/council-ui/src/config/council.config.ts](apps/council-ui/src/config/council.config.ts)
+  specifuing which chain ui should use
+- [apps/council-ui/src/config/localhost.ts](apps/council-ui/src/config/localhost.ts)
+  UI to specify which crowdfunding vaults we created
+- [apps/council-ui/src/ui/vaults/fundVault/FundVaultStatsRow.tsx](apps/council-ui/src/ui/vaults/fundVault/FundVaultStatsRow.tsx#L92)
+  a UI widget that adds send all funds button to the Vault
 
 # Communication between members
 
