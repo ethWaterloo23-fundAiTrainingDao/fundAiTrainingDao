@@ -61,13 +61,13 @@ manges:
 - votes
 - delegations
 
-### Council's [ `FrozenLockingVolt.sol` ]()
+### Council's [ `FrozenLockingVolt.sol` ]( packages/council-typechain/contracts/vaults/FrozenLockingVault.sol )
 
 - inherets from `LockingVolt.sol` 
 
 Frozen because it removes a withdraw functionality
 
-### `CappedFrozenLockingVault.sol` (our addition)
+### [ `CappedFrozenLockingVolt.sol` ]( packages/council-typechain/contracts/vaults/CappedFrozenLockingVault.sol ) (our addition)
 
 - inherets from `FrozenLockingVolt.sol` (TODO: should inheret from `LockingVolt.sol` since it overwrites withdraw anyway)
 - initiated by executing `FrozenLockingVaultFactory.sol`'s proposal
@@ -75,7 +75,7 @@ Frozen because it removes a withdraw functionality
 - keeps track of votes to be used in `FrozenLockingVaultFactory.sol`
 - has a function of sending all of the funds after the fund is full to a grant reciever specified in the initializing proposal in `FrozenLockingVaultFactory.sol`
 
-### `FrozenLockingVaultFactory.sol` (our addition)
+### [ `FrozenLockingVaultFactory.sol` ]( packages/council-typechain/contracts/vaults/FrozenLockingVaultFactory.sol ) (our addition)
 
 - inherets from `LockingVolt.sol`
 - adds a function to create `CappedFrozenLockingVault.sol` with size of the vault and the reciepient as arguments
