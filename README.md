@@ -54,7 +54,7 @@ steps and tasks related to training large AI models and
 `FrozenLockingVaultFactory.sol` responsible for governance of starting
 `CappedFrozenLockingVault.sol` vaults.  
 
-### Council's [ `LockingVolt.sol` ](packages/council-typechain/contracts/vaults/LockingVolt.sol)
+### Council's [ `LockingVolt.sol` ]( packages/council-typechain/contracts/vaults/LockingVault.sol#L10 )
 
 manges:
 - deposits
