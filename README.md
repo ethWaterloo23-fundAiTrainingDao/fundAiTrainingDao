@@ -82,6 +82,11 @@ Frozen because it removes a withdraw functionality
 - adds a function to create `CappedFrozenLockingVault.sol` with size of the vault and the reciepient as arguments
 - responsible for hangling the proposals and voting
 
+### UI and build process
+
+we modified the following config files:
+- [apps/council-sdk-starter/package.json] (apps/council-sdk-starter/package.json)
+
 # Communication between members
 
 Annonymous communication between members reduces chances of corruption, bribery, and destructive cortel.
