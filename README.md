@@ -48,9 +48,14 @@ returns the top 3 matches.
 
 ![image](https://github.com/ethWaterloo23-fundAiTrainingDao/fundAiTrainingDao/assets/1944021/5065b48d-4375-4a22-8ed0-77c96342eafc)
 
+The main idea is to split a typical DAO's vault functionality into different
+contracts: *crowdfunder* responsible for crowdfunding the money needed for an
+action, and *reviewer* that reviews the proposals to create crowdfunds and
+manages voting to lunch the crowdfunds.
+
 Delv's council provides `FrozenLockingVolt.sol` that locks the cpaital and
-reverts withdraws. We inheret from 'FrozenLockingVolt.sol' into two contracts:
-`CappedFrozenLockingVault.sol` responsible for raising funds for different
+reverts withdraws. We inheret from 'FrozenLockingVolt.sol' into the two mentionned contracts:
+crowdfund `CappedFrozenLockingVault.sol` responsible for raising funds for different
 steps and tasks related to training large AI models and
 `FrozenLockingVaultFactory.sol` responsible for governance of starting
 `CappedFrozenLockingVault.sol` vaults.  
@@ -68,7 +73,7 @@ manges:
 
 Frozen because it removes a withdraw functionality
 
-### [ `CappedFrozenLockingVolt.sol` ]( packages/council-typechain/contracts/vaults/CappedFrozenLockingVault.sol ) (our addition)
+### crowdfunder contract [ `CappedFrozenLockingVolt.sol` ]( packages/council-typechain/contracts/vaults/CappedFrozenLockingVault.sol ) (our addition)
 
 - inherets from `FrozenLockingVolt.sol` (TODO: should inheret from `LockingVolt.sol` since it overwrites withdraw anyway)
 - initiated by executing `FrozenLockingVaultFactory.sol`'s proposal
@@ -76,7 +81,7 @@ Frozen because it removes a withdraw functionality
 - keeps track of votes to be used in `FrozenLockingVaultFactory.sol`
 - has a function of sending all of the funds after the fund is full to a grant reciever specified in the initializing proposal in `FrozenLockingVaultFactory.sol`
 
-### [ `FrozenLockingVaultFactory.sol` ]( packages/council-typechain/contracts/vaults/FrozenLockingVaultFactory.sol ) (our addition)
+### reviewer contract [ `FrozenLockingVaultFactory.sol` ]( packages/council-typechain/contracts/vaults/FrozenLockingVaultFactory.sol ) (our addition)
 
 - inherets from `LockingVolt.sol`
 - adds a function to create `CappedFrozenLockingVault.sol` with size of the vault and the reciepient as arguments
@@ -86,6 +91,12 @@ Frozen because it removes a withdraw functionality
 
 we modified the following config files:
 - [apps/council-sdk-starter/package.json](apps/council-sdk-starter/package.json#L25)
+  added a an option to a script to create a crowdfunder (crowdfunding vault)
+- [apps/council-sdk-starter/src/scripts/createFund.ts](apps/council-sdk-starter/src/scripts/createFund.ts)
+  a script to create a crowdfunder on chain and print the tx
+- [apps/council-sdk-starter/src/scripts/changeVaultStatus.ts](apps/council-sdk-starter/src/scripts/changeVaultStatus.ts#L17)
+  specify the address of the voting contract, which is a part of the reviewer
+  entity
 
 # Communication between members
 
