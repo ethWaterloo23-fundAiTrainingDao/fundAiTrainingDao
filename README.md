@@ -108,7 +108,14 @@ we modified the following config files:
   UI to specify which crowdfunding vaults we created
 - [apps/council-ui/src/ui/vaults/fundVault/FundVaultStatsRow.tsx](apps/council-ui/src/ui/vaults/fundVault/FundVaultStatsRow.tsx#L92)
   a UI widget that adds send all funds button to the Vault
-- [apps/council-ui/src/ui/vaults/fundVault/hooks/useSendFunds.tsx](apps/council-ui/src/ui/vaults/fundVault/hooks/useSendFunds.tsx#L17) connects the send button to the chain
+- [apps/council-ui/src/ui/vaults/fundVault/hooks/useSendFunds.tsx](apps/council-ui/src/ui/vaults/fundVault/hooks/useSendFunds.tsx#L17)
+  connects the send button to the chain
+
+### adding XDC and Gnosis chains
+
+we modified
+[packages/council-cli/src/utils/chains.ts](packages/council-cli/src/utils/chains.ts)
+file by adding the chain's information
 
 # Communication between members
 
