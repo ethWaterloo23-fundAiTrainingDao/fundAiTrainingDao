@@ -128,6 +128,8 @@ We extend XMTP protocol with group messages and create a web UI inside the DAO U
 
 # AI to audit contracts
 
+for lunching AI to audit contracts, see [contract-analysis/README.md](contract-analysis/README.m)
+
 # Council-Kit (starting point to which we've made the modifications)
 
 Council kit is the complete toolkit for scaffolding your own DAO using the
