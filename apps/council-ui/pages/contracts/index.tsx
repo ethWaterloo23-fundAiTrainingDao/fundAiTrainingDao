@@ -1,9 +1,14 @@
+/* eslint-disable no-restricted-imports */
 import { ReactElement, useState } from "react";
 import { Page } from "src/ui/base/Page";
 import { useSigner } from "wagmi";
-import { AUCTION_EXAMPLE, INTEGER_EXAMPLE, RAND_EXAMPLE } from "./examples";
+import {
+  AUCTION_EXAMPLE,
+  INTEGER_EXAMPLE,
+  RAND_EXAMPLE,
+} from "../../src/audit/examples";
+import { queryVectorBackend } from "../../src/audit/xmtp";
 import Results from "./results";
-import { queryVectorBackend } from "./xmtp";
 
 interface ContractProps {
   solCode: string;

@@ -1,3 +1,4 @@
+/* eslint-disable @tanstack/query/prefer-query-object-syntax */
 import { Ballot } from "@council/sdk";
 import {
   useMutation,

@@ -6,7 +6,7 @@ import { ReactElement } from "react";
 import HoverModal from "./hover";
 
 interface ResultsProps {
-  data: JSON;
+  data: any;
 }
 
 export default function Results({ data }: ResultsProps): ReactElement {

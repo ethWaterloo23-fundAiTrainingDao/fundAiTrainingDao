@@ -167,8 +167,11 @@ export function VoterList({
   useEffect(() => {
     // Function to stream new messages in the conversation
     const streamMessages = async () => {
-      if (convRef.current && typeof convRef.current !== "never") {
-        const newStream = await convRef.current.streamMessages();
+      if (
+        convRef.current &&
+        typeof convRef.current["streamMessages"] === "function"
+      ) {
+        const newStream = await (convRef.current as any).streamMessages();
         for await (const msg of newStream) {
           const exists = messages.find((m) => m.id === msg.id);
           if (!exists) {

@@ -8,16 +8,17 @@ import { useState } from "react";
 import useBroadcast from "../../hooks/useBroadcast";
 import styles from "./Chat.module.css";
 
-function Chat({
-  client,
-  messageHistory,
-  conversation,
-  addresses,
-}): JSX.Element {
+type ChatProps = {
+  client?: any;
+  messageHistory?: any;
+  conversation?: any;
+  addresses?: any;
+};
+function Chat(props: ChatProps): JSX.Element {
   const address = useAddress();
   const broadcastMessage = useBroadcast();
   const [inputValue, setInputValue] = useState("");
-
+  const { client, messageHistory, conversation, addresses } = props;
   // Function to handle sending a message
   const handleSend = async () => {
     if (inputValue) {
@@ -37,7 +38,8 @@ function Chat({
   };
 
   // MessageList component to render the list of messages
-  const MessageList = ({ messages }): JSX.Element => {
+  const MessageList = (props: { messages: any[] }): JSX.Element => {
+    let { messages } = props;
     // Filter messages by unique id
     messages = messages.filter(
       (v: { id: any }, i: any, a: any[]) =>
