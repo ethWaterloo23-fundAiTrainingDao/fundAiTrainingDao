@@ -293,14 +293,56 @@ Learn more about the power of Turborepo:
 
 ## Instructions on starting the AI portion
 
-1. Launch the webpage `yarn workspace @council/cli council server -p 8888` and `yarn workspace council-ui dev` so that http://0.0.0.0:3000 is ready! 
+1. Launch the webpage `yarn workspace @council/cli council server -p 8888` and `yarn workspace council-ui dev` so that http://0.0.0.0:3100 is ready!
 
-2. Start the XMTP relay, from `contract-analysis-gateway` directory, run `yarn start` to start the relay server, it should say `Listening on 0x46fC2771f9Ad87b57EFD8b1157DeFd3bEd69d324`. Note the environment variables in `.env` file should contain KEY and AI_BACKEND. E.g. `KEY=0xce2ad27f93873964525483d3aa5fb8c11e340048c02fdfb0bdce8c7925ca29ab` and `AI_BACKEND=http://35.238.33.72:8000`
+If the server errors saying `@council/sdk` can't be found, i.e.
 
-3. Start the AI backend, from `contract-analysis` directory. Follow the [README.md](packages/contract-analysis/README.md), or [Dockerfile](packages/contract-analysis/Dockerfile). Check that `.env` has `ORG_TOKEN='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'`. Start by `uvicorn main:app --host 0.0.0.0 --port 8000 --workers 1`. Note that `curl localhost:8000` should work. The GCP instance is `http://35.238.33.72`.
+```
+Server Error
+Error: Module not found: Can't resolve '@council/sdk'
+> 1 | import {
+  2 |   CouncilContext,
+  3 |   GSCVault,
+  4 |   GSCVotingContract,
 
-4. You're done! 🥳 You can visit http://localhost:3000/contracts and try to submit one of 3 example Solidity snippets. Wallet need to be connected.
+Import trace for requested module:
+./src/ui/council/CouncilProvider.tsx
+./src/ui/app.tsx
+./pages/_app.tsx
+```
 
+Try this:
+```
+cd packages/council-sdk
+yarn install
+yarn build
+```
+then repeat `yarn workspace council-ui dev` and works.
 
+2. Start the XMTP relay, from `contract-analysis-gateway` directory, run `yarn start` to start the relay server, it should say `Listening on 0x46fC2771f9Ad87b57EFD8b1157DeFd3bEd69d324`. Note the environment variables in `.env` file should contain KEY and AI_BACKEND. E.g. `KEY=0xce2ad27f93873964525483d3aa5fb8c11e340048c02fdfb0bdce8c7925ca29ab` and `AI_BACKEND=https://api.fundhub.xyz` and make sure `XMTP_ENV=dev`.
 
+3. Start the AI backend, from `contract-analysis` directory. Follow the [README.md](packages/contract-analysis/README.md), or [Dockerfile](packages/contract-analysis/Dockerfile). Check that `.env` has `ORG_TOKEN='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'`. Start by `uvicorn main:app --host 0.0.0.0 --port 3101`. Note that `curl https://api.fundhub.xyz` should work. Ubuntu may have outdated sqlite3, need to manually install the latest version.
+
+```bash
+wget https://www.sqlite.org/snapshot/sqlite-snapshot-202309111527.tar.gz;
+tar -xf sqlite-snapshot-202309111527.tar.gz;
+cd sqlite-snapshot-202309111527;
+./configure;
+make;
+sudo make install;
+sudo ldconfig;
+sqlite3 --version
+```
+
+Also may need to manually pip install `pip install chromadb python-multipart`.
+
+4. You're done! 🥳 You can visit http://localhost:3100/contracts and try to submit one of 3 example Solidity snippets. Wallet need to be connected.
+
+5. For deployments, several steps.
+
+* configure nginx reverse proxy for port 3100 and 3101.
+* get a domain for the python backend, e.g. `api.fundhub.xyz`, and set up DNS records.
+* configure .env for NEXT_PUBLIC_GOERLI_ALCHEMY_KEY or NEXT_PUBLIC_MAINNET_ALCHEMY_KEY
+* configure `rpc.fundhub.xyz` if using local 8888 network.
+* `yarn build` for `packages/council-sdk` and `packages/council-deploy` and lastly `apps/council-ui` (in that order).
 
