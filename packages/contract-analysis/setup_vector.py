@@ -11,6 +11,7 @@ For all files inside the vulnerabilities folder, index the vulnerabilities.
 
 from functools import cache
 import os
+from utils import get_org_token
 
 import requests
 import chromadb
@@ -34,7 +35,7 @@ def query_vector(text: str) -> list[float]:
     """
 
     model_id = "sentence-transformers/all-MiniLM-L6-v2"
-    hf_token = "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"
+    hf_token = get_org_token()
 
     api_url = (
         f"https://api-inference.huggingface.co/pipeline/feature-extraction/{model_id}"

@@ -7,11 +7,7 @@ from utils import is_solidity_code
 
 from setup_vector import query_database
 
-from utils import get_org_token
-
 TRANSFORMER_MODEL = "paraphrase-MiniLM-L6-v2"
-# obviously no token in the code, it's in .env
-ORG_TOKEN = get_org_token()
 
 
 app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)

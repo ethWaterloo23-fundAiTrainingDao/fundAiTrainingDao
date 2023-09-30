@@ -1,11 +1,11 @@
-# from dotenv import dotenv_values
+from dotenv import dotenv_values
+
 # dotenv is broken on mac?
 
 
 def get_org_token():
-    # config = dotenv_values(".env")
-    # return config["ORG_TOKEN"]
-    return "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"
+    config = dotenv_values(".env")
+    return config["ORG_TOKEN"]
 
 
 def is_solidity_code(code):
