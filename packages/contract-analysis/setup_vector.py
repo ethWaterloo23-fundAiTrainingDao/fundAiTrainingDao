@@ -15,7 +15,6 @@ from utils import get_org_token
 
 import requests
 import chromadb
-from chromadb.config import Settings
 
 
 # Langchain doesn't have a SolidtyLoader, so we'll use the TextLoader
@@ -138,11 +137,8 @@ def create_database():
 
 @cache
 def get_chromadb_client():
-    client = chromadb.Client(
-        Settings(
-            chroma_db_impl="duckdb+parquet",
-            persist_directory="solidity_vulnerabilities.chromadb",
-        )
+    client = chromadb.PersistentClient(
+        path="solidity_vulnerabilities.chromadb",
     )
     return client
 
