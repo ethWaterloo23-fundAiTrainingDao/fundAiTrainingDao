@@ -13,11 +13,10 @@ uvicorn = "^0.22.0"
 black = "^23.3.0"
 requests = "^2.31.0"
 python-multipart = "^0.0.6"
-langchain = "^0.0.212"
 llama-index = "^0.6.32"
-chromadb = "^0.4.13"
 bs4 = "^0.0.1"
 unstructured = "^0.7.8"
+langchain = "^0.0.305"
 
 
 [build-system]

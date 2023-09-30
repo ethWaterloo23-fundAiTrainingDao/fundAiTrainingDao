@@ -112,7 +112,7 @@ def create_database():
 
     # Add the vulnerabilities to the database
     print("Adding vulnerabilities...")
-    collection.add(
+    collection.upsert(
         embeddings=vulnerability_vectors,
         metadatas=[doc.metadata for doc in vulnerabilities],
         documents=[doc.page_content for doc in vulnerabilities],
@@ -121,16 +121,12 @@ def create_database():
 
     # Add the markdowns to the database
     print("Adding markdowns...")
-    collection.add(
+    collection.upsert(
         embeddings=markdown_vectors,
         metadatas=[doc.metadata for doc in markdowns],
         documents=[doc.page_content for doc in markdowns],
         ids=[doc.metadata["source"] for doc in markdowns],
     )
-
-    # Persist the database
-    print("Persisting database...")
-    client.persist()
 
     print("Done!")
 
